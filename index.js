@@ -39,6 +39,7 @@ const users = [
     {
         name: 'William',
         pass: 'Mouse2005!',
+        makepost: 1,
         bookmarks: [
             {
                 title: "Google",
@@ -106,12 +107,12 @@ app.get("/home", (req, res) => {
         for (i = 0; i < users.length; i++) {
             if (users[i].pass == req.cookies['password']) {
             
-                res.render("home", {posts: getPosts(), name: users[i].name, bookmarks: users[i].bookmarks})            
+                res.render("home", {posts: getPosts(), user: users[i]})    
+                return        
             }
         }
-    } else {
-        res.render("home", {posts: getPosts()})
-    }
+    } 
+    res.render("home", {posts: getPosts()})
 })
 
 app.get("/bookmarks", (req, res) => {
@@ -119,25 +120,28 @@ app.get("/bookmarks", (req, res) => {
         for (i = 0; i < users.length; i++) {
             if (users[i].pass == req.cookies['password']) {
             
-                res.render("bookmarks", {name: users[i].name, bookmarks: users[i].bookmarks})
+                res.render("bookmarks", {user: users[i]})
+                return
             }
         }
-    } else {
-        res.render("home", {posts: getPosts(), error: "No Access!" })
-    }
+    } 
+    res.render("home", {posts: getPosts(), error: "No Access!" })
 })
 
 app.get("/make-post", (req, res) => {
     if (req.cookies['password']) {
         for (i = 0; i < users.length; i++) {
             if (users[i].pass == req.cookies['password']) {
-            
-                res.render("make-post", {name: users[i].name})
+                if (users[i].makepost){
+                    res.render("make-post", {user: users[i]})
+                } else {
+                    res.render("home", {posts: getPosts(),user: users[i], error: "No Access!" })
+                }
+                return
             }
         }
-    } else {
-        res.render("home", {posts: getPosts(), error: "No Access!" })
-    }
+    } 
+    res.render("home", {posts: getPosts(), error: "No Access!" })
 })
 
 app.post("/make-post", (req, res) => {
@@ -145,37 +149,57 @@ app.post("/make-post", (req, res) => {
     if (req.cookies['password']) {
         for (i = 0; i < users.length; i++) {
             if (users[i].pass == req.cookies['password']) {
-
-                inPost = {
-                    title: req.body.title,
-                    author: req.body.author,
-                    date: req.body.date,
-                    content: req.body.content,
-                    img: req.body.img
+                if(users[i].makepost){
+                    inPost = {
+                        title: req.body.title,
+                        author: req.body.author,
+                        date: req.body.date,
+                        content: req.body.content,
+                        img: req.body.img
+                    }
+    
+                    // posts.unshift(inPost)
+                    db.get('data')
+                        .unshift(inPost)
+                        .write()
+                
+                    res.render("make-post", {user: users[i], success: "Success"})
+                } else {
+                    res.render("home", {posts: getPosts(), user: users[i], error: "No Access!" })
                 }
-
-                // posts.unshift(inPost)
-                db.get('data')
-                    .unshift(inPost)
-                    .write()
-            
-                res.render("make-post", {name: users[i].name, success: "Success"})
+                return
             }
         }
-    } else {
-        res.render("home", {posts: getPosts(), error: "No Access!" })
     }
+    res.render("home", {posts: getPosts(), error: "No Access!" })
 });
 
 app.post("/cheatcodes", (req, res) => {
+    msg = null
     for (i = 0; i < cheatcodes.length; i++) {
         if (cheatcodes[i].code == req.body.cheatcode) {
-
-            res.render("home", {posts: getPosts(), success: cheatcodes[i].msg})
-            return;
+            msg = cheatcodes[i].msg
+            
         }
     }
-    res.render("home", {posts: getPosts(), error: "Unknown code" })
+    
+    if (req.cookies['password']) {
+        for (i = 0; i < users.length; i++) {
+            if (users[i].pass == req.cookies['password']) {
+                if(msg){
+                    res.render("home", {posts: getPosts(), user: users[i], success: msg})
+                } else {
+                    res.render("home", {posts: getPosts(), user: users[i], error: "Unknown code" })
+                }
+            }
+        }
+    } else {
+        if(msg){
+            res.render("home", {posts: getPosts(), success: msg})
+        } else {
+            res.render("home", {posts: getPosts(), error: "Unknown code" })
+        }
+    }
 });
 
 app.get('/privacy-policy', (req, res) => {

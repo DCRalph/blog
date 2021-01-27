@@ -29,5 +29,12 @@
     </div>
 </div>
 <div class="p-3" style="background-color: rgba(0, 0, 0, 0.2)">
-    <p class="text-center text-white m-0">© Copyright 2021 William Giles. All rights reserved. <a class="text-white" href="/privacy-policy" target="_blank">Privacy Policy</a></p>
+    <p class="text-center text-white m-0">© Copyright <span id="year">year</span> William Giles. All rights reserved. <a class="text-white" href="/privacy-policy" target="_blank">Privacy Policy</a></p>
 </div>
+
+<script>
+    var today = new Date();
+    var yyyy = today.getFullYear();
+    
+    document.getElementById("year").innerHTML = yyyy;
+</script>

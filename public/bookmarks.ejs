@@ -21,7 +21,7 @@
     <main role="main" class="container">
         <div class="row">
             <div class="col-md-6 offset-md-3 text-center text-white">
-                <% bookmarks.forEach(function(bookmark){ %>
+                <% user.bookmarks.forEach(function(bookmark){ %>
                     <%- include('stuff/bookmark', {bookmark: bookmark}); %>
                 <% }); %>
             </div>

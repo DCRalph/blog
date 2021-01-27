@@ -10,7 +10,7 @@
             <li class="nav-item">
                 <a class="nav-link" href="home">Home</a>
             </li>
-            <% if (locals.name) { %>
+            <% if (locals.user) { %>
             <li class="nav-item">
                 <a class="nav-link" href="bookmarks">Bookmarks</a>
             </li>
@@ -21,9 +21,9 @@
             </ul>
 
             <span class="navbar-text">
-                <% if (locals.name) { %>
+                <% if (locals.user) { %>
                 <span class="text-light pe-3">
-                    <%= name %>
+                    <%= user.name %>
                 </span>
                 <a href="/logout" class="btn btn-primary">Logout</a>
                 <% } else { %>
