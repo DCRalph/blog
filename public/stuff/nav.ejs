@@ -1,0 +1,54 @@
+<nav class="navbar navbar-expand-md navbar-dark bg-danger shadow-lg sticky-top">
+    <div class="container-fluid">
+        <a class="navbar-brand" href="home">William Giles</a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
+        aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav me-auto">
+            <li class="nav-item">
+                <a class="nav-link" href="home">Home</a>
+            </li>
+            <% if (locals.name) { %>
+            <li class="nav-item">
+                <a class="nav-link" href="bookmarks">Bookmarks</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="make-post">Make Post</a>
+            </li> 
+            <% } %>
+            </ul>
+
+            <span class="navbar-text">
+                <% if (locals.name) { %>
+                <span class="text-light pe-3">
+                    <%= name %>
+                </span>
+                <a href="/logout" class="btn btn-primary">Logout</a>
+                <% } else { %>
+                <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#login">Login</button>
+                <% } %>
+            </span>
+        </div>
+    </div>
+</nav>
+
+<div class="modal fade" id="login" tabindex="-1" aria-labelledby="loginTitle" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="loginTitle">Please login</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form method="post" action="/login">
+                    <input type="password" id="inputPassword" name="password" class="form-control mb-3" placeholder="Password"
+                        style="border-top-right-radius: .25rem; border-bottom-right-radius: .25rem;" required autofocus>
+
+                        <button type="submit" class="btn btn-primary" type="submit">Login</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
