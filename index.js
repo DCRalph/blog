@@ -38,7 +38,7 @@ function getPosts(){
 const users = [
     {
         name: 'William',
-        pass: 'Mouse2005!',
+        pass: '!',
         makepost: 1,
         bookmarks: [
             {
