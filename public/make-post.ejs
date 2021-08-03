@@ -45,9 +45,9 @@
                     <div class="col-12">
                         <input type="text" id="inputTitle" name="title" class="form-control mb-3" placeholder="Title" required>
                     </div>
-                    
+
                     <div class="col-6">
-                        <input type="text" id="inputAuthor" name="author" class="form-control mb-3" placeholder="Author" value="<%= user.name %>" required>
+                        <input type="text" id="inputAuthor" name="author" class="form-control mb-3" placeholder="Author" value="<%= user.name %>" disabled required>
                     </div>
 
                     <div class="col-6">
@@ -63,14 +63,14 @@
                             <textarea class="form-control mb-3" placeholder="Content" id="inputContent" name="content" style="height: 100px" required></textarea>
                             <label for="inputContent">Content</label>
                         </div>
-                        
+
                     </div>
 
-                    
+
                     <div class="col-12">
                         <button type="submit" class="btn btn-primary mb-3" type="submit">Submit</button>
                     </div>
-                    
+
                 </form>
             </div>
         </div>
@@ -78,8 +78,8 @@
     <footer class="footer mt-auto bg-primary text-white text-center text-lg-start">
         <%- include('stuff/fotter'); %>
     </footer>
-    
-    
+
+
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/js/bootstrap.bundle.min.js"
         integrity="sha384-ygbV9kiqUc6oa4msXn9868pTtWMgiQaeYH7/t7LECLbyPA2x65Kgf80OJFdroafW"
         crossorigin="anonymous"></script>
@@ -91,7 +91,7 @@
         var mm = String(today.getMonth() + 1).padStart(2, '0');
         var yyyy = today.getFullYear();
         today = dd + '/' + mm + '/' + yyyy;
-        
+
         document.getElementById("inputDate").value = today;
     </script>
 </body>

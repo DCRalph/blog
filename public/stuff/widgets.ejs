@@ -1,12 +1,12 @@
 <div class="card my-4">
-    <h5 class="card-header">Side Widget</h5>
+    <h4 class="card-header">Side Widget</h4>
     <div class="card-body">
         100% useful infomation.
     </div>
 </div>
 
 <div class="card my-4">
-    <h5 class="card-header">Cheat codes</h5>
+    <h4 class="card-header">Cheat codes</h4>
     <div class="card-body">
 
         <form method="post" action="/cheatcodes">
@@ -17,3 +17,39 @@
         </form>
     </div>
 </div>
+
+<div class="card my-4">
+    <h4 class="card-header">Users</h4>
+    <div class="card-body">
+
+        <% userList.forEach(function(user){ %>
+            <h5><%= user %></h5>
+        <% }); %>
+
+    </div>
+</div>
+
+<% if (locals.user) { %>
+    <div class="card my-4">
+        <h4 class="card-header">Your perms</h4>
+        <div class="card-body">
+
+            <% if (user.makePost) { %>
+                <h5>Make Post</h5>
+            <% } %>
+
+            <% if (user.deleteOthers) { %>
+                <h5>Delete Others</h5>
+            <% } %>
+
+            <% if (user.manageUser) { %>
+                <h5>Manage User</h5>
+            <% } %>
+
+            <% if (user.hide) { %>
+                <h5>Hidden</h5>
+            <% } %>
+
+        </div>
+    </div>
+<% } %>

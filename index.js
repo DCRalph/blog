@@ -5,6 +5,8 @@ const bodyParser = require('body-parser')
 const cookieParser = require('cookie-parser')
 const lowDB = require('lowdb')
 const FileSync = require('lowdb/adapters/FileSync')
+const { nanoid } = require("nanoid")
+const md5 = require('md5');
 
 const db = lowDB(new FileSync('db.json'))
 
@@ -30,177 +32,335 @@ app.set("views", __dirname + "/public")
 //     }
 // ]
 
+
 function getPosts(){
-    const postsIN = db.get('data').value()
-    return postsIN
+    return db.get('posts').value()
 }
 
-const users = [
-    {
-        name: 'William',
-        pass: '!',
-        makepost: 1,
-        bookmarks: [
-            {
-                title: "Google",
-                link: "https://www.google.co.nz"
-            },
-            {
-                title: "Github",
-                link: "https://www.github.com"
-            }
-        ]
-    },
-    {
-        name: 'Michael',
-        pass: 'buildingnext',
-        bookmarks: [
-            {
-                title: "Google",
-                link: "https://www.google.co.nz"
-            },
-            {
-                title: "Github",
-                link: "https://www.github.com"
-            }
-        ]
-    }
-]
+function getNsfw(){
+    return db.get('nsfw').value()
+}
 
-const cheatcodes = [{
-    code: 69,
-    msg: "nice"
-    },{
-    code: 1234,
-    msg: "Wow u can count"
+function getUsers(){
+    return db.get('users').value()
+}
+
+function getCheatCodes(){
+    return db.get('cheatcodes').value()
+}
+
+var users = getUsers()
+var cheatcodes = getCheatCodes()
+
+var tokens = []
+var tokenLookup = []
+
+function validateUser(token){
+    users = getUsers()
+
+    if(tokens[token]){
+        for (let i = 0; i < users.length; i++) {
+            if(tokens[token] == users[i].pass){
+                return users[i]
+            }
+        }
+    } else return false
+}
+
+function getUserlist(){
+    users = getUsers()
+    let out = []
+    for (let i = 0; i < users.length; i++) {
+        if(!users[i].hide){
+            out.push(users[i].name)
+        }
     }
-]
+    return out
+}
 
 app.get('/', (req, res) => {
     res.redirect('home')
 })
 
 app.post("/login", (req, res) => {
-    for (i = 0; i < users.length; i++) {
-        if (users[i].pass == req.body.password) {
+    users = getUsers()
+    const inPass = req.body.password
 
-            res.cookie('password', req.body.password, { maxAge: 60000 * 60 * 24 * 365 });
+    for (i = 0; i < users.length; i++) {
+        if (users[i].pass == md5(inPass)) {
+
+            if(tokenLookup[users[i].pass]){
+                delete tokens[tokenLookup[users[i].pass]]
+                delete tokenLookup[users[i].pass]
+
+                console.log('prev token');
+            } else {
+                console.log('new token');
+            }
+
+            const token = nanoid(64)
+            tokens[token] = users[i].pass
+            tokenLookup[users[i].pass] = token
+            res.cookie('Token', token, { maxAge: 60000 * 60 * 24 * 365 });
 
             res.redirect('/home')
             return;
         }
     }
-    res.render("home", {posts: getPosts(), error: "Unknown password" })
+    res.render("home", {posts: getPosts(), userList: getUserlist(), error: "Unknown password" })
 });
 
 app.get("/logout", (req, res) => {
-    res.clearCookie("password")
+    delete tokenLookup[tokens[req.cookies['Token']]]
+    delete tokens[req.cookies['Token']]
+    res.clearCookie("Token")
     res.redirect('/')
 });
 
-// app.get('/home', (req, res) => {
-//     res.render('home', {posts: posts});
-// })
+/////////////////////////////////////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////////////////////////////////////
 
-app.get("/home", (req, res) => {
-    if (req.cookies['password']) {
-        for (i = 0; i < users.length; i++) {
-            if (users[i].pass == req.cookies['password']) {
-            
-                res.render("home", {posts: getPosts(), user: users[i]})    
-                return        
-            }
-        }
-    } 
-    res.render("home", {posts: getPosts()})
-})
+app.get("/home", (req, res) => {    
+    if(user = validateUser(req.cookies['Token'])){
+        return res.render("home", {posts: getPosts(), userList: getUserlist(), user: user})          
+    }
 
-app.get("/bookmarks", (req, res) => {
-    if (req.cookies['password']) {
-        for (i = 0; i < users.length; i++) {
-            if (users[i].pass == req.cookies['password']) {
-            
-                res.render("bookmarks", {user: users[i]})
-                return
-            }
-        }
-    } 
-    res.render("home", {posts: getPosts(), error: "No Access!" })
+    res.render("home", {posts: getPosts(), userList: getUserlist()})
 })
 
 app.get("/make-post", (req, res) => {
-    if (req.cookies['password']) {
-        for (i = 0; i < users.length; i++) {
-            if (users[i].pass == req.cookies['password']) {
-                if (users[i].makepost){
-                    res.render("make-post", {user: users[i]})
-                } else {
-                    res.render("home", {posts: getPosts(),user: users[i], error: "No Access!" })
-                }
-                return
-            }
+    if(user = validateUser(req.cookies['Token'])){
+        if (user.makePost){
+            return res.render("make-post", {user: user})
+        } else {
+            return res.render("home", {posts: getPosts(), user: user, error: "No Access!" })
         }
     } 
-    res.render("home", {posts: getPosts(), error: "No Access!" })
+    res.render("home", {posts: getPosts(), userList: getUserlist(), error: "No Access!" })
 })
 
 app.post("/make-post", (req, res) => {
     console.log(req.body);
-    if (req.cookies['password']) {
-        for (i = 0; i < users.length; i++) {
-            if (users[i].pass == req.cookies['password']) {
-                if(users[i].makepost){
-                    inPost = {
-                        title: req.body.title,
-                        author: req.body.author,
-                        date: req.body.date,
-                        content: req.body.content,
-                        img: req.body.img
-                    }
-    
-                    // posts.unshift(inPost)
-                    db.get('data')
-                        .unshift(inPost)
-                        .write()
-                
-                    res.render("make-post", {user: users[i], success: "Success"})
-                } else {
-                    res.render("home", {posts: getPosts(), user: users[i], error: "No Access!" })
-                }
-                return
+    if(user = validateUser(req.cookies['Token'])){
+        if(user.makePost){
+            imgs = req.body.img.split(',')
+            for(let i = 0; i < imgs.length; i++){
+                imgs[i] = imgs[i].trim()
             }
+
+            inPost = {
+                id: nanoid(5),
+                madeBy: getUsers()[i].name,
+                author: getUsers()[i].name,
+                title: req.body.title,
+                author: req.body.author,
+                date: req.body.date,
+                content: req.body.content,
+                img: imgs
+            }
+
+            db.get('posts')
+                .unshift(inPost)
+                .write()
+        
+            return res.render("home", {posts: getPosts(), userList: getUserlist(), user: user, success: "Success"})
+        } else {
+            return res.render("home", {posts: getPosts(), userList: getUserlist(), user: user, error: "No Access!" })
         }
     }
-    res.render("home", {posts: getPosts(), error: "No Access!" })
+    return res.render("home", {posts: getPosts(), userList: getUserlist(), error: "No Access!" })
+});
+
+app.post("/delete-post", (req, res) => {
+    if(user = validateUser(req.cookies['Token'])){
+        posts = getPosts()
+        for(let i = 0; i < posts.length; i++){
+            if(posts[i].id == req.body.postId){
+                
+                if(user.deleteOthers || user.name == posts[i].madeBy){
+
+                    db.get('posts')
+                        .find({ id: req.body.postId })
+                        .assign({ deleted: 1})
+                        .write()
+                    posts = getPosts()
+
+                    return res.render("home", {posts: posts, userList: getUserlist(), user: user, success: "Success"})
+                } else {
+                    return res.render("home", {posts: posts, userList: getUserlist(), user: user, error: "No Access!" })
+                }
+            } 
+        }
+        return res.render("home", {posts: posts, userList: getUserlist(), user: user, error: "Post does not exist"})
+    } else {
+        return res.render("home", {posts: posts, userList: getUserlist(), error: "No Access!" })
+    }
+});
+
+/////////////////////////////////////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////////////////////////////////////
+
+app.get("/bookmarks", (req, res) => {
+    if(user = validateUser(req.cookies['Token'])){
+        return res.render("bookmarks", {user: user})          
+    }
+    return res.render("home", {posts: getPosts(), userList: getUserlist(), error: "No Access!" })
+})
+
+app.get("/users/:user", (req, res) => {
+    for (let i  = 0; i < getUsers().length; i++) {
+        if (getUsers()[i].name == req.params.user) {
+            return res.redirect(getUsers()[i].link)
+        }
+    }
+    return res.render("home", {posts: getPosts(), userList: getUserlist(), user: validateUser(req.cookies['Token']), error: "User not founds" })
+});
+
+app.get("/change-pass", (req, res) => {
+    if(user = validateUser(req.cookies['Token'])){
+        return res.render("change-pass", {user: user})
+    } 
+    return res.render("home", {posts: getPosts(), userList: getUserlist(), error: "No Access!" })
+})
+
+app.post("/change-pass", (req, res) => {
+    console.log(req.body);
+    if(user = validateUser(req.cookies['Token'])){
+
+            delete tokens[tokenLookup[users[i].pass]]
+            delete tokenLookup[users[i].pass]
+
+            const token = nanoid(64)
+            tokens[token] = md5(req.body.password)
+            tokenLookup[md5(req.body.password)] = token
+            res.cookie('Token', token, { maxAge: 60000 * 60 * 24 * 365 });
+
+            db.get('users')
+                .find({pass: user.pass})
+                .assign({ pass: md5(req.body.password)})
+                .write()
+
+    return res.render("change-pass", {user: user, success: "Success!"})
+    }
+    return res.render("home", {posts: getPosts(), userList: getUserlist(), error: "No Access!" })
+});
+
+app.get("/manage-user", (req, res) => {
+    if(user = validateUser(req.cookies['Token'])){
+        if(user.manageUser){
+            return res.render("manage-user", {user: user, users: getUsers()})
+        }
+    } 
+    return res.render("home", {posts: getPosts(), userList: getUserlist(), user: validateUser(req.cookies['Token']), error: "No Access!" })
+})
+
+app.post("/manage-user/make", (req, res) => {
+    console.log(req.body);
+    if(user = validateUser(req.cookies['Token'])){
+        if(user.manageUser){
+            newUser = {
+                name: req.body.name,
+                pass: md5(req.body.pass),
+                link: req.body.link,
+                bookmarks: [{
+                    title: "DCRalph",
+                    link: "https://dcralph.com"
+                    }
+                ]
+            }
+            if(req.body.makePost) newUser.makePost = 1
+            if(req.body.deleteOthers) newUser.deleteOthers = 1
+            if(req.body.manageUser) newUser.manageUser = 1
+            if(req.body.hide) newUser.hide = 1
+
+            db.get('users')
+                .push(newUser)
+                .write()
+
+        }
+
+    return res.render("manage-user", {user: user, users: getUsers(), success: "Success!"})
+    }
+    return res.render("home", {posts: getPosts(), userList: getUserlist(), error: "No Access!" })
+});
+
+app.post("/manage-user/edit/:name", (req, res) => {
+    console.log(req.body);
+    if(user = validateUser(req.cookies['Token'])){
+        if(user.manageUser){
+
+            change = {
+                makePost: req.body.makePost ? 1 : 0,
+                deleteOthers: req.body.deleteOthers ? 1 : 0,
+                manageUser: req.body.manageUser ? 1 : 0,
+                hide: req.body.hide ? 1 : 0,
+                link: req.body.link
+            }
+
+            if(req.body.name != req.params.name){
+                change.name = req.body.name
+            }
+
+            if(req.body.pass != ''){
+                change.pass = md5(req.body.pass)
+                console.log('new pass');
+            }
+            users = getUsers()
+            for (let i = 0; i < users.length; i++) {
+                if(users[i].name == req.body.name){
+                    delete tokens[tokenLookup[users[i].pass]]
+                    delete tokenLookup[users[i].pass]
+                }
+            }
+
+            db.get('users')
+                .find({name: req.params.name})
+                .assign(change)
+                .write()
+
+        }
+
+    return res.render("manage-user", {user: user, users: getUsers(), success: "Success!"})
+    }
+    return res.render("home", {posts: getPosts(), userList: getUserlist(), error: "No Access!" })
+});
+
+app.post("/manage-user/delete/:name", (req, res) => {
+    console.log(req.body);
+    if(user = validateUser(req.cookies['Token'])){
+        if(user.manageUser){
+
+            db.get('users')
+                .remove({name: req.params.name})
+                .write()
+
+        }
+
+    return res.render("manage-user", {user: user, users: getUsers(), success: "Success!"})
+    }
+    return res.render("home", {posts: getPosts(), userList: getUserlist(), error: "No Access!" })
 });
 
 app.post("/cheatcodes", (req, res) => {
     msg = null
-    for (i = 0; i < cheatcodes.length; i++) {
-        if (cheatcodes[i].code == req.body.cheatcode) {
-            msg = cheatcodes[i].msg
-            
+    for (i = 0; i < getCheatCodes().length; i++) {
+        if (getCheatCodes()[i].code == req.body.cheatcode) {
+            msg = getCheatCodes()[i].msg
         }
     }
     
-    if (req.cookies['password']) {
-        for (i = 0; i < users.length; i++) {
-            if (users[i].pass == req.cookies['password']) {
-                if(msg){
-                    res.render("home", {posts: getPosts(), user: users[i], success: msg})
-                } else {
-                    res.render("home", {posts: getPosts(), user: users[i], error: "Unknown code" })
-                }
-            }
-        }
+    if(msg){
+        res.render("home", {posts: getPosts(), userList: getUserlist(), user: validateUser(req.cookies['Token']), success: msg})
     } else {
-        if(msg){
-            res.render("home", {posts: getPosts(), success: msg})
-        } else {
-            res.render("home", {posts: getPosts(), error: "Unknown code" })
-        }
+        res.render("home", {posts: getPosts(), userList: getUserlist(), user: validateUser(req.cookies['Token']), error: "Unknown code" })
     }
+    
 });
+
+
+app.get("/*", (req, res) => {
+    res.redirect('home')
+})
 
 app.get('/privacy-policy', (req, res) => {
     res.render('privacy-policy');

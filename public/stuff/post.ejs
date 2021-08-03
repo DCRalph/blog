@@ -1,22 +1,25 @@
-<!-- <div class="row justify-content-center">
-    <div class="card text-white bg-danger mt-3 shadow-lg" style="max-width: 500px;">
-        <div class="card-header text-center"><%= post.title %></div>
-        <div class="card-body">
-            <%= post.content %>
-        </div>
+<% if (!locals.post.deleted) { %>
+    <div class="row mt-4">
+        <h1 class="col-8"><%= post.title %></h1>
+        <% if (locals.user) { if (user.deleteOthers || user.name == post.madeBy) { %>
+            <form action="delete-post" method="post" class="col-4 justify-content-end">
+                <input class="d-none" name="postId" value="<%= post.id %>">
+                <button class="btn btn-primary float-end" type="submit">Delete</button>
+            </form>
+        <% }} %>
     </div>
-</div> -->
 
-<h1 class="mt-4"><%= post.title %></h1>
-<p class="lead">
-    by <a href="#!"><%= post.author %></a>
-</p>
-<hr>
-<p><%= post.date %></p>
-<hr>
-<% if (locals.post.img) { %>
-<img class="img-fluid rounded" src="<%= post.img %>" alt="">
-<hr>
+    <p class="lead">by <a href="/users/<%= post.madeBy %>"><%= post.madeBy %></a></p>
+
+    <hr>
+    <p><%= post.date %></p>
+    <hr>
+    <% if (locals.post.img[0] != "") { %>
+        <% post.img.forEach(function(img){ %>
+            <img class="img-fluid rounded mb-3 mx-auto d-block" src="<%= img %>" alt="">
+        <% }); %>
+        <hr>
+    <% } %>
+    <p class="lead"><%- post.content %></p>
+    <hr>
 <% } %>
-<p class="lead"><%- post.content %></p>
-<hr>

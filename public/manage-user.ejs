@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-giJF6kkoqNQ00vy+HMDP7azOuL0xtbfIcaT9wjKHr8RbDVddVHyTfAAsrekwKmP1" crossorigin="anonymous">
+    <title>Blog</title>
+
+    <style>
+        html, body {
+            height: 100%;
+        }
+    </style>
+</head>
+<body class="bg-dark d-flex flex-column h-100">
+    <header>
+        <%- include('stuff/nav'); %>
+    </header>
+
+    <main role="main" class="container">
+        <% if (locals.error) { %>
+        <div class="row pt-3">
+            <div class="col-md-4 offset-4">
+                <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                <%= error %>
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+            </div>
+        </div>
+        <% } %>
+        <% if (locals.success) { %>
+            <div class="row pt-3">
+                <div class="col-md-4 offset-4">
+                    <div class="alert alert-success alert-dismissible fade show" role="alert">
+                    <%= success %>
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                    </div>
+                </div>
+            </div>
+            <% } %>
+        <div class="row">
+            <div class="col-md-8 offset-md-2 text-center text-white">
+                <form method="post" action="/manage-user/make" class="row mt-3">
+                    <div class="col-6">
+                        <input type="text" name="name" class="form-control mb-3" placeholder="Name" required>
+                    </div>
+
+                    <div class="col-6">
+                        <input type="text" name="pass" class="form-control mb-3" placeholder="Password" required>
+                    </div>
+
+                    <div class="col-3 mb-3">
+                        <input type="checkbox" class="btn-check" value="makePost" id="makePost" autocomplete="off" name="makePost">
+                        <label class="btn btn-outline-primary" for="makePost">Make Post</label>
+                    </div>
+
+                    <div class="col-3 mb-3">
+                        <input type="checkbox" class="btn-check" value="deleteOthers" id="deleteOthers" autocomplete="off" name="deleteOthers">
+                        <label class="btn btn-outline-primary" for="deleteOthers">Delete Others</label>
+                    </div>
+
+                    <div class="col-3 mb-3">
+                        <input type="checkbox" class="btn-check" value="manageUser" id="manageUser" autocomplete="off" name="manageUser">
+                        <label class="btn btn-outline-primary" for="manageUser">Manage User</label>
+                    </div>
+
+                    <div class="col-3 mb-3">
+                        <input type="checkbox" class="btn-check" value="hide" id="hide" autocomplete="off" name="hide">
+                        <label class="btn btn-outline-primary" for="hide">Hide User</label>
+                    </div>
+
+                    <div class="col-12">
+                        <input type="text" name="link" class="form-control mb-3" placeholder="Link">
+                    </div>
+
+                    <div class="col-12">
+                        <button type="submit" class="btn btn-primary mb-3" type="submit">Submit</button>
+                    </div>
+
+                </form>
+            </div>
+        </div>
+        <div class="row text-center text-white justify-content-center">
+            <% users.forEach(function(user){ %>
+                <div class="modal fade" id="<%= user.name %>-userModal" tabindex="-1">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title text-dark" id="userModalLabel">Edit <%= user.name %></h5>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                            </div>
+                            <form method="post" action="/manage-user/edit/<%= user.name %>" class="row mt-3">
+                                <div class="modal-body">
+
+                                    <div class="col">
+                                        <input type="text" name="name" class="form-control mb-3" placeholder="Name" value="<%= user.name %>" required>
+                                    </div>
+
+                                    <div class="col">
+                                        <input type="text" name="pass" class="form-control mb-3" placeholder="Change Password">
+                                    </div>
+
+                                    <input type="checkbox" class="btn-check" value="makePost" id="<%= user.name %>-makePost" autocomplete="off" name="makePost" <% if (user.makePost) { %>checked<% } %>>
+                                    <label class="btn btn-outline-primary mb-3" for="<%= user.name %>-makePost">Make Post</label>
+
+                                    <input type="checkbox" class="btn-check" value="deleteOthers" id="<%= user.name %>-deleteOthers" autocomplete="off" name="deleteOthers" <% if (user.deleteOthers) { %>checked<% } %>>
+                                    <label class="btn btn-outline-primary mb-3" for="<%= user.name %>-deleteOthers">Delete Others</label>
+
+                                    <input type="checkbox" class="btn-check" value="manageUser" id="<%= user.name %>-manageUser" autocomplete="off" name="manageUser" <% if (user.manageUser) { %>checked<% } %>>
+                                    <label class="btn btn-outline-primary mb-3" for="<%= user.name %>-manageUser">Manage User</label>
+
+                                    <input type="checkbox" class="btn-check" value="hide" id="<%= user.name %>-hide" autocomplete="off" name="hide" <% if (user.hide) { %>checked<% } %>>
+                                    <label class="btn btn-outline-primary mb-3" for="<%= user.name %>-hide">Hidden</label>
+
+                                    <div class="col">
+                                        <input type="text" name="link" class="form-control mb-3" placeholder="Link" value="<%= user.link %>" required>
+                                    </div>
+
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                    <button type="submit" class="btn btn-primary">Save changes</button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card text-dark text-start bg-light m-3" style="max-width: 15rem;">
+                    <h4 class="card-header"><%= user.name %></h4>
+                    <div class="card-body">
+
+                        <div class="row justify-content-center pb-3">
+                            <div class="col">
+                                <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#<%= user.name %>-userModal">Edit</button>
+                            </div>
+
+                            <form action="/manage-user/delete/<%= user.name %>" method="post" class="col">
+                                <button class="btn btn-danger" type="submit">Delete</button>
+                            </form>
+                        </div>
+
+                        <% if (user.makePost) { %>
+                            <h5>Make Post</h5>
+                        <% } %>
+
+                        <% if (user.deleteOthers) { %>
+                            <h5>Delete Others</h5>
+                        <% } %>
+
+                        <% if (user.manageUser) { %>
+                            <h5>Manage User</h5>
+                        <% } %>
+
+                        <% if (user.hide) { %>
+                            <h5>Hidden</h5>
+                        <% } %>
+                    </div>
+                </div>
+            <% }); %>
+        </div>
+    </main>
+    <footer class="footer mt-auto bg-primary text-white text-center text-lg-start">
+        <%- include('stuff/fotter'); %>
+    </footer>
+
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-ygbV9kiqUc6oa4msXn9868pTtWMgiQaeYH7/t7LECLbyPA2x65Kgf80OJFdroafW"
+        crossorigin="anonymous"></script>
+    <script src="https://code.jquery.com/jquery-3.2.1.min.js" crossorigin="anonymous"></script>
+
+</body>
+</html>
