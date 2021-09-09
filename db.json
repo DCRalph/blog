@@ -1,185 +1,177 @@
 {
-  "posts": [
-    {
-      "id": "zJvyO",
-      "madeBy": "William",
-      "title": "ghjkl;'",
-      "date": "04/08/2021",
-      "content": "fghjkl;'",
-      "img": [
-        ""
-      ],
-      "deleted": 1
-    },
-    {
-      "id": "t133a",
-      "madeBy": "William",
-      "title": "PETER",
-      "date": "24/06/2021",
-      "content": "yes",
-      "img": [
-        "https://cdnb.artstation.com/p/assets/images/images/006/480/009/medium/wil-hughes-peter-griffin.jpg?1498917815"
-      ]
-    },
-    {
-      "id": "AyM5Q",
-      "madeBy": "William",
-      "title": "lsiufhs;kd.fhj",
-      "date": "31/05/2021",
-      "content": "hi ",
-      "img": [
-        "http://www.facets.la/fullview/F_2014_361_DARKWING.jpg",
-        "http://www.facets.la/fullview/F_2013_315.jpg",
-        "http://www.facets.la/fullview/F_2013_319_DOWN.jpg"
-      ],
-      "deleted": 1
-    },
-    {
-      "id": "NVnJX",
-      "madeBy": "William",
-      "title": "klausdfhksdjh",
-      "date": "29/05/2021",
-      "content": "s,dfkhlkasdjhfliusad",
-      "img": [
-        ""
-      ],
-      "deleted": 1
-    },
-    {
-      "id": "Kyy_H",
-      "madeBy": "William",
-      "title": "brok",
-      "date": "27/05/2021",
-      "content": "name pls",
-      "img": [
-        ""
-      ],
-      "deleted": 1
-    },
-    {
-      "id": "Az-m2",
-      "madeBy": "William",
-      "author": "William",
-      "title": "NEW 2021 iMac! ON SALE NOW!",
-      "date": "21/05/2021",
-      "content": "Buy now for $100!  while stocks last. New M1 apple soc! blazing fast.",
-      "img": [
-        "https://www.apple.com/v/imac-24/a/images/overview/color_front_blue__x3psx2ttezmi_large_2x.jpg"
-      ]
-    },
-    {
-      "id": "8H9_X",
-      "madeBy": "William",
-      "author": "William",
-      "title": "Toms rich",
-      "date": "06/05/2021",
-      "content": "change my mind",
-      "img": [
-        "https://cdn.discordapp.com/attachments/829862695389233187/839765132732530718/image0.jpg"
-      ]
-    },
-    {
-      "id": "SSazg",
-      "madeBy": "William",
-      "title": "POG",
-      "author": "William",
-      "date": "03/05/2021",
-      "content": "POG!",
-      "img": [
-        "https://i1.sndcdn.com/avatars-ypCd5dE5YbGkyF0p-Y59d9w-t500x500.jpg"
-      ],
-      "deleted": 0
-    },
-    {
-      "id": "rsQPn",
-      "madeBy": "William",
-      "title": "AIRPODS MAX ON SALE NOW",
-      "author": "William",
-      "date": "01/02/2021",
-      "content": "Get the new AirPods Max for the low low $350. Comes with a two year warranty. Guaranteed high sound quality. Buy now while stocks last. 27 in stock.",
-      "img": [
-        "https://resources.stuff.co.nz/content/dam/images/4/y/p/x/9/m/image.related.StuffLandscapeSixteenByNine.1420x800.4ypx9q.png/1607640045877.jpg"
-      ],
-      "deleted": 0
-    },
-    {
-      "id": "eXNVc",
-      "madeBy": "William",
-      "title": "!!! NEW IPHONE 12 !!!",
-      "author": "William",
-      "date": "01/02/2021",
-      "content": "Get a iPhone 12 for only $600 with all the new features. Comes with 128 Gb to  1 Tb and all the new colours.",
-      "img": [
-        "https://www.apple.com/newsroom/images/product/iphone/geo/apple_iphone-12_new-design_geo_10132020.jpg.landing-big_2x.jpg"
-      ],
-      "deleted": 0
-    },
-    {
-      "id": "qIwN9",
-      "madeBy": "William",
-      "title": "Elgato hd60s",
-      "author": "William",
-      "date": "27/01/2021",
-      "content": "buy now for 69 cents now. no joke.",
-      "img": [
-        "https://futurefive.co.nz/uploads/story/2020/05/18/Elgato_HD60S%2B_03.jpg"
-      ],
-      "deleted": 0
-    }
-  ],
-  "users": [
-    {
-      "name": "William",
-      "pass": "a54af9a5b0e4f7d68fc6747a03729b41",
-      "link": "https://www.youtube.com/channel/UCJ2jGzghu5ChWSXkwn63FEQ",
-      "makePost": 1,
-      "deleteOthers": 1,
-      "manageUser": 1,
-      "bookmarks": [
-        {
-          "title": "Google",
-          "link": "https://www.google.co.nz"
-        },
-        {
-          "title": "Github",
-          "link": "https://www.github.com"
-        }
-      ],
-      "hide": 0
-    },
-    {
-      "name": "dfghjkl;'",
-      "pass": "eb70c6e293d4fab8fa85d0950d50cf5e",
-      "link": "",
-      "bookmarks": [
-        {
-          "title": "DCRalph",
-          "link": "https://dcralph.com"
-        }
-      ],
-      "makePost": 1
-    }
-  ],
-  "cheatcodes": [
-    {
-      "code": "69",
-      "msg": "nice"
-    },
-    {
-      "code": "1234",
-      "msg": "Wow u can count"
-    },
-    {
-      "code": "tom",
-      "msg": "Tom hates niggers"
-    },
-    {
-      "code": "_nsfw",
-      "msg": "You asked for it"
-    },
-    {
-      "code": "rory",
-      "msg": "Rory the racingcar"
-    }
-  ]
+	"posts": [
+		{
+			"id": "zJvyO",
+			"madeBy": "William",
+			"title": "ghjkl;'",
+			"date": "04/08/2021",
+			"content": "fghjkl;'",
+			"img": [
+				""
+			],
+			"deleted": 1
+		},
+		{
+			"id": "t133a",
+			"madeBy": "William",
+			"title": "PETER",
+			"date": "24/06/2021",
+			"content": "yes",
+			"img": [
+				"https://cdnb.artstation.com/p/assets/images/images/006/480/009/medium/wil-hughes-peter-griffin.jpg?1498917815"
+			]
+		},
+		{
+			"id": "AyM5Q",
+			"madeBy": "William",
+			"title": "lsiufhs;kd.fhj",
+			"date": "31/05/2021",
+			"content": "hi ",
+			"img": [
+				"http://www.facets.la/fullview/F_2014_361_DARKWING.jpg",
+				"http://www.facets.la/fullview/F_2013_315.jpg",
+				"http://www.facets.la/fullview/F_2013_319_DOWN.jpg"
+			],
+			"deleted": 1
+		},
+		{
+			"id": "NVnJX",
+			"madeBy": "William",
+			"title": "klausdfhksdjh",
+			"date": "29/05/2021",
+			"content": "s,dfkhlkasdjhfliusad",
+			"img": [
+				""
+			],
+			"deleted": 1
+		},
+		{
+			"id": "Kyy_H",
+			"madeBy": "William",
+			"title": "brok",
+			"date": "27/05/2021",
+			"content": "name pls",
+			"img": [
+				""
+			],
+			"deleted": 1
+		},
+		{
+			"id": "Az-m2",
+			"madeBy": "William",
+			"author": "William",
+			"title": "NEW 2021 iMac! ON SALE NOW!",
+			"date": "21/05/2021",
+			"content": "Buy now for $100!  while stocks last. New M1 apple soc! blazing fast.",
+			"img": [
+				"https://www.apple.com/v/imac-24/a/images/overview/color_front_blue__x3psx2ttezmi_large_2x.jpg"
+			]
+		},
+		{
+			"id": "8H9_X",
+			"madeBy": "William",
+			"author": "William",
+			"title": "Toms rich",
+			"date": "06/05/2021",
+			"content": "change my mind",
+			"img": [
+				"https://cdn.discordapp.com/attachments/829862695389233187/839765132732530718/image0.jpg"
+			]
+		},
+		{
+			"id": "SSazg",
+			"madeBy": "William",
+			"title": "POG",
+			"author": "William",
+			"date": "03/05/2021",
+			"content": "POG!",
+			"img": [
+				"https://i1.sndcdn.com/avatars-ypCd5dE5YbGkyF0p-Y59d9w-t500x500.jpg"
+			],
+			"deleted": 0
+		},
+		{
+			"id": "rsQPn",
+			"madeBy": "William",
+			"title": "AIRPODS MAX ON SALE NOW",
+			"author": "William",
+			"date": "01/02/2021",
+			"content": "Get the new AirPods Max for the low low $350. Comes with a two year warranty. Guaranteed high sound quality. Buy now while stocks last. 27 in stock.",
+			"img": [
+				"https://resources.stuff.co.nz/content/dam/images/4/y/p/x/9/m/image.related.StuffLandscapeSixteenByNine.1420x800.4ypx9q.png/1607640045877.jpg"
+			],
+			"deleted": 0
+		},
+		{
+			"id": "eXNVc",
+			"madeBy": "William",
+			"title": "!!! NEW IPHONE 12 !!!",
+			"author": "William",
+			"date": "01/02/2021",
+			"content": "Get a iPhone 12 for only $600 with all the new features. Comes with 128 Gb to  1 Tb and all the new colours.",
+			"img": [
+				"https://www.apple.com/newsroom/images/product/iphone/geo/apple_iphone-12_new-design_geo_10132020.jpg.landing-big_2x.jpg"
+			],
+			"deleted": 0
+		},
+		{
+			"id": "qIwN9",
+			"madeBy": "William",
+			"title": "Elgato hd60s",
+			"author": "William",
+			"date": "27/01/2021",
+			"content": "buy now for 69 cents now. no joke.",
+			"img": [
+				"https://futurefive.co.nz/uploads/story/2020/05/18/Elgato_HD60S%2B_03.jpg"
+			],
+			"deleted": 0
+		}
+	],
+	"users": [
+		{
+			"name": "William",
+			"pass": "a54af9a5b0e4f7d68fc6747a03729b41",
+			"link": "https://www.youtube.com/channel/UCJ2jGzghu5ChWSXkwn63FEQ",
+			"makePost": 1,
+			"deleteOthers": 1,
+			"manageUser": 1,
+			"bookmarks": [
+				{
+					"title": "Google",
+					"link": "https://www.google.co.nz"
+				},
+				{
+					"title": "Github",
+					"link": "https://www.github.com"
+				}
+			],
+			"hide": 0
+		},
+		{
+			"name": "dfghjkl;'",
+			"pass": "eb70c6e293d4fab8fa85d0950d50cf5e",
+			"link": "",
+			"bookmarks": [
+				{
+					"title": "DCRalph",
+					"link": "https://dcralph.com"
+				}
+			],
+			"makePost": 1
+		}
+	],
+	"cheatcodes": [
+		{
+			"code": "69",
+			"msg": "nice"
+		},
+		{
+			"code": "1234",
+			"msg": "Wow u can count"
+		},
+		{
+			"code": "rory",
+			"msg": "Rory the racingcar"
+		}
+	]
 }
